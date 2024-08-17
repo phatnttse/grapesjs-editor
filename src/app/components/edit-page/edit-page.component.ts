@@ -49,7 +49,7 @@ export class EditPageComponent implements OnInit {
     const pageIndex = pages.findIndex(
       (page: any) => page.id === updatedPage.id
     );
-    console.log('Page:', updatedPage);
+    console.log('Page:', updatedPage.content);
 
     if (pageIndex !== -1) {
       pages[pageIndex] = updatedPage;
@@ -68,7 +68,6 @@ export class EditPageComponent implements OnInit {
     if (page) {
       this.page = page;
       this.editor.setComponents(page.content);
-      console.log('Data:', page.content);
     }
   }
 }

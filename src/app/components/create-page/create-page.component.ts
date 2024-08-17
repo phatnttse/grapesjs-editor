@@ -5,6 +5,7 @@ import { GrapesJsService } from '../../services/grapesjs.service';
 import { Router } from '@angular/router';
 import { Page } from '../../models/page.model';
 import { GrapesjsConfig } from '../../configurations/grapesjs.config';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-page',
@@ -20,7 +21,8 @@ export class CreatePageComponent implements OnInit {
 
   constructor(
     private grapesjsService: GrapesJsService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +37,9 @@ export class CreatePageComponent implements OnInit {
       content: data,
     };
     this.grapesjsService.createPage(page);
-    console.log('Page created:', page);
-    this.router.navigate(['']);
+    this.toastr.success('Success', 'Page created successfully', {
+      timeOut: 3000,
+      progressBar: true,
+    });
   }
 }
