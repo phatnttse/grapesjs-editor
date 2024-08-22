@@ -11,6 +11,3 @@ export class ImageUpload {
     this.height = height;
   }
 }
-export interface ImageUploadResponse {
-  data: ImageUpload;
-}

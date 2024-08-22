@@ -29,11 +29,26 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss", "node_modules/ngx-toastr/toastr.css"],
+            "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css",
+              "src/assets/styles/user.style.scss"
+            ],
             "scripts": [
               "node_modules/grapesjs-preset-webpage/dist/index.js",
               "node_modules/grapesjs-plugin-forms/dist/index.js",
-              "node_modules/grapesjs-blocks-basic/dist/grapesjs-blocks-basic.min.js"
+              "node_modules/grapesjs-blocks-basic/dist/grapesjs-blocks-basic.min.js",
+              "node_modules/grapesjs-video-embed-manager/dist/grapesjs-video-embed-manager.min.js",
+              "node_modules/grapesjs-blocks-flexbox/dist/index.js",
+              "node_modules/grapesjs-component-countdown/dist/index.js",
+              "node_modules/grapesjs-lory-slider/dist/grapesjs-lory-slider.min.js",
+              "node_modules/grapesjs-navbar/dist/index.js",
+              "node_modules/grapesjs-style-bg/dist/index.js",
+              "node_modules/grapesjs-style-gradient/dist/index.js",
+              "node_modules/grapesjs-tabs/dist/grapesjs-tabs.min.js",
+              "node_modules/grapesjs-touch/dist/grapesjs-touch.min.js",
+              "node_modules/grapesjs-preset-newsletter/dist/index.js"
             ]
           },
           "configurations": {
@@ -87,7 +102,10 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss"
+            ],
             "scripts": []
           }
         }

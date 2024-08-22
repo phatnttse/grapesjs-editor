@@ -1,0 +1,113 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="mb-32 text-center" style="color: #03c9d7">Thông tin video</h4>
+    <form [formGroup]="formVideoUpload" (submit)="onSubmit()">
+      <h6 class="mb-3 mt-5">Poster</h6>
+      <div class="upload-section">
+        <div class="file-square" (click)="uploadWidget()">
+          <label for="cover-image">
+            <button mat-button type="button">
+              <i class="material-icons">add_photo_alternate</i>
+            </button>
+            <span class="fs-12 mt-2">Thêm hình ảnh</span>
+          </label>
+        </div>
+        <div class="uploaded-images">
+          @for (image of listUploadedImages; track $index) {
+          <div class="uploaded-image">
+            <img
+              width="100px"
+              height="100px"
+              style="object-fit: cover"
+              [src]="image"
+              alt=""
+            />
+          </div>
+          }
+        </div>
+      </div>
+
+      <h6 class="mb-3 mt-2">Video</h6>
+      <div class="file-video-section">
+        <div class="file-square mb-3" (click)="videoInput.click()">
+          <input
+            #videoInput
+            type="file"
+            accept="video/*"
+            (change)="onVideoSelected($event)"
+            style="display: none"
+          />
+          <label>
+            <button mat-button type="button">
+              <i class="material-icons">videocam</i>
+            </button>
+            <span class="fs-12 mt-2">Thêm video</span>
+          </label>
+        </div>
+        <div class="uploaded-video">
+          <video *ngIf="valueVideoUrl" width="200" controls>
+            <source [src]="valueVideoUrl" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+
+      <h6 class="mb-3">Tiêu đề</h6>
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label style="font-size: 14px">Nhập tiêu đề</mat-label>
+        <input
+          matInput
+          type="text"
+          required
+          formControlName="title"
+          [class.is-invalid]="
+            formVideoUpload.get('title')?.invalid &&
+            formVideoUpload.get('title')?.touched
+          "
+        />
+        @if (formVideoUpload.get('title')?.hasError('required')) {
+        <mat-error style="font-size: 12px"
+          >Tiêu đề của video không được để trống</mat-error
+        >
+        }@else if (formVideoUpload.get('title')?.hasError('minlength')) {
+        <mat-error style="font-size: 12px"
+          >Tiêu đề của video quá ngắn. Ít nhất 5 ký tự</mat-error
+        >
+        }
+      </mat-form-field>
+      <h6 class="mb-3 mt-3">Mô tả video</h6>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Nhập mô tả</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          formControlName="description"
+          [class.is-invalid]="
+            formVideoUpload.get('description')?.invalid &&
+            formVideoUpload.get('description')?.touched
+          "
+        ></textarea>
+        @if (formVideoUpload.get('description')?.hasError('required')) {
+        <mat-error class="fs-12">Mô tả không được để trống</mat-error>
+        }@else if (formVideoUpload.get('description')?.hasError('minlength')) {
+        <mat-error class="fs-12"
+          >Mô tả video quá ngắn. Ít nhất 10 ký tự</mat-error
+        >
+        }
+      </mat-form-field>
+
+      <div class="d-flex justify-content-end mt-5">
+        <button
+          mat-raised-button
+          class="fs-20 p-24"
+          color="primary"
+          type="submit"
+          extend
+        >
+          Hoàn tất
+          <mat-icon>task_alt</mat-icon>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

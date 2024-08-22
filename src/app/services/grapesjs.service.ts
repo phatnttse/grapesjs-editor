@@ -1,43 +1,64 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { Page } from '../models/page.model';
+import { CreatePageDto, Page, UpdatePageDto } from '../models/page.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { ImageUpload, ImageUploadResponse } from '../models/image-upload';
+import { ImageUpload } from '../models/image-upload';
+import { environment } from '../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GrapesJsService {
-  localStorage?: Storage;
+  constructor(private http: HttpClient) {}
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private http: HttpClient
-  ) {
-    this.localStorage = document.defaultView?.localStorage;
+  createPage(page: CreatePageDto): Observable<Page> {
+    return this.http.post<Page>(`${environment.apiBaseUrl}/page`, page);
   }
 
-  createPage(page: Page): void {
-    const pages = JSON.parse(localStorage.getItem('pages') || '[]');
-    pages.push(page);
-    localStorage.setItem('pages', JSON.stringify(pages));
+  getPageById(id: string): Observable<Page> {
+    return this.http.get<Page>(`${environment.apiBaseUrl}/page/${id}`);
   }
 
-  getPages(): Page[] {
-    return JSON.parse(localStorage.getItem('pages') || '[]');
-  }
-  getPageById(id: string): Page | undefined {
-    const pages: Page[] = JSON.parse(localStorage.getItem('pages') || '[]');
-    return pages.find((page) => page.id === id);
+  updatePage(page: UpdatePageDto): Observable<Page> {
+    return this.http.patch<Page>(`${environment.apiBaseUrl}/page`, page);
   }
 
-  uploadImage(file: File): Observable<any> {
+  uploadImage(file: File): Observable<ImageUpload> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<any>(
-      'https://localhost:7191/api/v1/form/upload',
+    return this.http.post<ImageUpload>(
+      `${environment.apiBaseUrl}/form/upload`,
       formData
     );
+  }
+
+  uploadVideo(
+    video: File,
+    title: string,
+    description: string,
+    poster: string
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('videoFile', video);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('poster', poster);
+    return this.http.post<any>(
+      `${environment.apiBaseUrl}/form/upload-video`,
+      formData
+    );
+  }
+
+  getAssets(): Observable<ImageUpload[]> {
+    return this.http.get<ImageUpload[]>(
+      `${environment.apiBaseUrl}/form/assets`
+    );
+  }
+
+  getHtmlFromUrl(url: string): Observable<string> {
+    return this.http.get(`https://localhost:7191/${url}`, {
+      responseType: 'text',
+    });
   }
 }

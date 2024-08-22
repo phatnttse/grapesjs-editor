@@ -1,11 +1,91 @@
-<header class="p-4 bg-gray-800 text-white flex justify-between items-center">
-  <h1 class="text-xl">GrapesJS Editor</h1>
-  <button
-    style="position: absolute; right: 100px"
-    (click)="savePage()"
-    class="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded me-5"
-  >
-    Lưu thay đổi
-  </button>
-</header>
+<div class="card my-5" style="width: 50%; margin: 0 auto">
+  <div class="card-body">
+    <h4 class="mb-32" style="color: #03c9d7; font-weight: 600">
+      Thông tin trang
+    </h4>
+    <form [formGroup]="formPage" (submit)="onSubmit()">
+      <h6 class="mb-3 mt-5">Ảnh trang</h6>
+      <div class="upload-section">
+        <div class="file-square" (click)="uploadWidget()">
+          <label for="cover-image">
+            <button mat-button type="button">
+              <i class="material-icons">add_photo_alternate</i>
+            </button>
+            <span class="fs-12 mt-2">Thêm hình ảnh</span>
+          </label>
+        </div>
+        <div class="uploaded-images">
+          @for (image of listUploadedImages; track $index) {
+          <div class="uploaded-image">
+            <img
+              width="100px"
+              height="100px"
+              style="object-fit: cover"
+              [src]="image"
+              alt=""
+            />
+          </div>
+          }
+        </div>
+      </div>
+
+      <h6 class="mb-3 mt-2">Ảnh bìa</h6>
+      @if (valueThumbnail) {
+      <div class="file-square mb-5">
+        <img
+          width="100px"
+          height="100px"
+          style="object-fit: cover"
+          [src]="valueThumbnail"
+          alt=""
+        />
+      </div>
+      }@else {
+      <div class="file-square mb-5">
+        <label for="product-image">
+          <button mat-button type="button" disabled="">
+            <i class="material-icons">add_photo_alternate</i>
+          </button>
+        </label>
+      </div>
+      }
+
+      <h6 class="mb-3">Tiêu đề</h6>
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label style="font-size: 14px">Nhập tiêu đề</mat-label>
+        <input
+          matInput
+          type="text"
+          required
+          formControlName="title"
+          [class.is-invalid]="
+            formPage.get('title')?.invalid && formPage.get('title')?.touched
+          "
+        />
+        @if (formPage.get('title')?.hasError('required')) {
+        <mat-error style="font-size: 12px"
+          >Tiêu đề của trang không được để trống</mat-error
+        >
+        }@else if (formPage.get('title')?.hasError('minlength')) {
+        <mat-error style="font-size: 12px"
+          >Tiêu đề của trang quá ngắn. Ít nhất 5 ký tự</mat-error
+        >
+        }
+      </mat-form-field>
+
+      <div class="d-flex justify-content-end mt-5">
+        <button
+          mat-raised-button
+          class="fs-20 p-24"
+          color="primary"
+          type="submit"
+          extend
+        >
+          Lưu thay đổi
+          <mat-icon>task_alt</mat-icon>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 <div id="gjs"></div>
