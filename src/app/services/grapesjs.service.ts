@@ -1,10 +1,13 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { CreatePageDto, Page, UpdatePageDto } from '../models/page.model';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ImageUpload } from '../models/image-upload';
 import { environment } from '../environments/environment.development';
+import {
+  BusinessCard,
+  CreateBusinessCardDto,
+  UpdateBusinessCardDto,
+} from '../models/business-card.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,23 +15,41 @@ import { environment } from '../environments/environment.development';
 export class GrapesJsService {
   constructor(private http: HttpClient) {}
 
-  createPage(page: CreatePageDto): Observable<Page> {
-    return this.http.post<Page>(`${environment.apiBaseUrl}/page`, page);
+  getBusinessCards(): Observable<BusinessCard[]> {
+    return this.http.get<BusinessCard[]>(
+      `${environment.apiBaseUrl}/BusinessCard`
+    );
   }
 
-  getPageById(id: string): Observable<Page> {
-    return this.http.get<Page>(`${environment.apiBaseUrl}/page/${id}`);
+  createBusinessCard(
+    businessCardDto: CreateBusinessCardDto
+  ): Observable<BusinessCard> {
+    return this.http.post<BusinessCard>(
+      `${environment.apiBaseUrl}/BusinessCard`,
+      businessCardDto
+    );
   }
 
-  updatePage(page: UpdatePageDto): Observable<Page> {
-    return this.http.patch<Page>(`${environment.apiBaseUrl}/page`, page);
+  getBusinessCardById(id: string): Observable<BusinessCard> {
+    return this.http.get<BusinessCard>(
+      `${environment.apiBaseUrl}/BusinessCard/${id}`
+    );
+  }
+
+  updateBusinessCard(
+    businessCardDto: UpdateBusinessCardDto
+  ): Observable<BusinessCard> {
+    return this.http.patch<BusinessCard>(
+      `${environment.apiBaseUrl}/BusinessCard`,
+      businessCardDto
+    );
   }
 
   uploadImage(file: File): Observable<ImageUpload> {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post<ImageUpload>(
-      `${environment.apiBaseUrl}/form/upload`,
+      `${environment.apiBaseUrl}/Grapesjs/upload`,
       formData
     );
   }
@@ -45,14 +66,14 @@ export class GrapesJsService {
     formData.append('description', description);
     formData.append('poster', poster);
     return this.http.post<any>(
-      `${environment.apiBaseUrl}/form/upload-video`,
+      `${environment.apiBaseUrl}/Grapesjs/upload-video`,
       formData
     );
   }
 
   getAssets(): Observable<ImageUpload[]> {
     return this.http.get<ImageUpload[]>(
-      `${environment.apiBaseUrl}/form/assets`
+      `${environment.apiBaseUrl}/Grapesjs/assets`
     );
   }
 

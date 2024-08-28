@@ -26,7 +26,9 @@ export const GrapesjsConfig = (
       'grapesjs-style-bg',
       'grapesjs-blocks-flexbox',
       'grapesjs-touch',
-      'grapesjs-preset-newsletter',
+      // 'grapesjs-preset-newsletter',
+      'grapesjs-plugin-ckeditor',
+      'grapesjs-tui-image-editor',
     ],
     pluginsOpts: {
       'grapesjs-tailwind': {
@@ -41,13 +43,33 @@ export const GrapesjsConfig = (
       'grapesjs-tabs': {},
       'grapesjs-style-bg': {},
       'grapesjs-blocks-flexbox': {},
-      'grapesjs-preset-newsletter': {},
+      // 'grapesjs-preset-newsletter': {},
+      'grapesjs-plugin-ckeditor': {},
+      'grapesjs-tui-image-editor': {
+        config: {
+          includeUI: {
+            initMenu: 'filter',
+          },
+        },
+        upload: `${environment.apiBaseUrl}/Grapesjs/upload`,
+        uploadFile: function (e: DragEvent | any) {
+          const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+          const file = files[0];
+          grapesjsService.uploadImage(file).subscribe({
+            next: (response: ImageUpload) => {
+              const am = editor.AssetManager;
+              am.add(response); // Thêm tài sản vào Asset Manager
+            },
+            error: (error: HttpErrorResponse) => {
+              console.log(error);
+            },
+          });
+        },
+        autoAdd: true,
+      },
       'grapesjs-video-embed-manager': {
         resources: ['local'],
-        localLoadUrl: `${environment.apiBaseUrl}/form/videos`,
-        localLoadCallback: async function () {
-          console.log('Local videos loaded');
-        },
+        localLoadUrl: `${environment.apiBaseUrl}/Grapesjs/videos`,
       },
     },
     fromElement: true,
@@ -55,14 +77,20 @@ export const GrapesjsConfig = (
     width: 'auto',
     storageManager: false,
     assetManager: {
-      upload: `${environment.apiBaseUrl}/form/upload`,
+      upload: `${environment.apiBaseUrl}/Grapesjs/upload`,
       uploadFile: function (e: DragEvent | any) {
         const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
         const file = files[0];
         grapesjsService.uploadImage(file).subscribe({
           next: (response: ImageUpload) => {
             const am = editor.AssetManager;
-            am.add(response); // Thêm tài sản vào Asset Manager
+            const asset = am.add(response); // Thêm tài sản vào Asset Manager
+
+            // Áp dụng thay đổi ngay lập tức vào hình ảnh trong phần soạn thảo
+            const selectedComponent = editor.getSelected();
+            if (selectedComponent && selectedComponent.is('image')) {
+              selectedComponent.set('src', asset.get('src'));
+            }
           },
           error: (error: HttpErrorResponse) => {
             console.log(error);
@@ -78,43 +106,43 @@ export const GrapesjsConfig = (
   const panelManager = editor.Panels;
   panelManager.addButton('options', {
     id: 'upload-video',
-    className: 'fa fa-video-camera',
+    className: 'fa-brands fa-youtube d-flex align-items-center',
     command: 'upload-video',
     attributes: { title: 'Upload Video' },
   });
-
-  const updateVideoList = async () => {
-    try {
-      const videos = await fetchVideoList();
-      editor.Panels.getPanel('options')?.trigger('change:video-list', videos);
-    } catch (error) {
-      console.error('Error updating video list:', error);
-    }
-  };
-
   editor.Commands.add('upload-video', {
-    run(editor, sender) {
-      dialog
-        .open(VideoUploadComponent, {
-          width: '800px',
-          height: '100%',
-        })
-        .afterClosed()
-        .subscribe(() => {
-          updateVideoList(); // Cập nhật danh sách video sau khi thêm thành công
-        });
+    run() {
+      dialog.open(VideoUploadComponent, {
+        width: '800px',
+        height: '100%',
+      });
     },
   });
-
-  const fetchVideoList = async () => {
-    try {
-      const response = await fetch(`${environment.apiBaseUrl}/form/videos`);
-      return response;
-    } catch (error) {
-      console.error('Error fetching videos:', error);
-      return [];
-    }
-  };
+  editor.BlockManager.add('profile-block', {
+    label: 'Profile Block',
+    content: `
+      <div class="relative w-full h-96 bg-center bg-cover flex items-center justify-center overflow-hidden">
+        <!-- Name and Job Title -->
+        <div class="absolute top-0 left-0 w-full flex flex-col items-center justify-center mt-4">
+          <p class="text-lg font-bold text-white">Your Name</p>
+          <p class="text-sm text-gray-200">Your Profession</p>
+        </div>
+        
+        <!-- Avatar Container positioned half outside the background -->
+        <div class="absolute bottom-0 flex flex-col items-center">
+          <div class="relative w-48 h-48">
+            <!-- Avatar Image -->
+            <img src="path/to/your/avatar.jpg" class="w-full h-full rounded-full object-cover border-4 border-white shadow-xl" alt="Avatar">
+            <!-- QR Code Badge -->
+            <div class="absolute bottom-0 right-0 w-12 h-12 transform translate-x-1/2 translate-y-1/2">
+              <img src="path/to/your/qrcode.png" class="w-full h-full rounded-full object-cover border-2 border-white shadow-md" alt="QR Code">
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    category: 'Custom Blocks',
+  });
 
   grapesjsService.getAssets().subscribe({
     next: (assets: ImageUpload[]) => {

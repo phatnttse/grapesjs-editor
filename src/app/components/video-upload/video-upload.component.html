@@ -1,6 +1,8 @@
-<div class="card">
+<div style="padding: 30px">
   <div class="card-body">
-    <h4 class="mb-32 text-center" style="color: #03c9d7">Thông tin video</h4>
+    <h4 class="mb-32 text-center" style="color: #03c9d7; font-weight: 600">
+      Thông tin video
+    </h4>
     <form [formGroup]="formVideoUpload" (submit)="onSubmit()">
       <h6 class="mb-3 mt-5">Poster</h6>
       <div class="upload-section">
@@ -39,7 +41,7 @@
           />
           <label>
             <button mat-button type="button">
-              <i class="material-icons">videocam</i>
+              <i class="material-icons">smart_display</i>
             </button>
             <span class="fs-12 mt-2">Thêm video</span>
           </label>

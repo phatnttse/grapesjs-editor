@@ -62,6 +62,10 @@ export class VideoUploadComponent {
       this.toastr.error('Please select a video to upload');
       return;
     }
+    if (!this.valuePoster) {
+      this.toastr.error('Please upload a poster for the video');
+      return;
+    }
     this.grapesjsService
       .uploadVideo(
         this.valueVideo,
@@ -77,8 +81,10 @@ export class VideoUploadComponent {
           this.listUploadedImages = [];
           this.valuePoster = '';
           this.valueVideo = null;
+          this.valueVideoUrl = '';
         },
         error: (error: HttpErrorResponse) => {
+          this.toastr.error(`${error.error.message}`, 'Error');
           console.log(error);
         },
       });
@@ -88,6 +94,13 @@ export class VideoUploadComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
+      const maxFileSize = 30 * 1024 * 1024;
+      if (file.size > maxFileSize) {
+        this.toastr.warning(
+          'Video size exceeds the 30MB limit. Please choose a smaller video.'
+        );
+        return;
+      }
       this.valueVideo = file;
       this.valueVideoUrl = URL.createObjectURL(file);
     }

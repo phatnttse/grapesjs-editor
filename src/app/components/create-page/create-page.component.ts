@@ -3,7 +3,10 @@ import grapesjs from 'grapesjs';
 import 'grapesjs-tailwind';
 import { GrapesJsService } from '../../services/grapesjs.service';
 import { Router, RouterModule } from '@angular/router';
-import { CreatePageDto, Page } from '../../models/page.model';
+import {
+  BusinessCard,
+  CreateBusinessCardDto,
+} from '../../models/business-card.model';
 import { GrapesjsConfig } from '../../configurations/grapesjs.config';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
@@ -21,6 +24,11 @@ import {
 import { CLOUDINARY } from '../../environments/environment.development';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+
+interface Position {
+  value: string;
+}
 
 @Component({
   selector: 'app-create-page',
@@ -34,17 +42,26 @@ import { MatDialog } from '@angular/material/dialog';
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatSelectModule,
   ],
   templateUrl: './create-page.component.html',
   styleUrl: './create-page.component.scss',
 })
 export class CreatePageComponent implements OnInit {
   editor: any = null; // Editor GrapesJS
-  formPage: FormGroup; // Form tạo trang
+  formBusinessCard: FormGroup; // Form tạo trang
   isOpenWidget: boolean = false; // Trạng thái của widget
   listUploadedImages: string[] = []; // Danh sách ảnh đã tải lên
   valueContent: string = ''; // Nội dung trang
   valueThumbnail: string = ''; // Ảnh bìa
+
+  positions: Position[] = [
+    { value: 'CEO' },
+    { value: 'COO' },
+    { value: 'Backend Developer' },
+    { value: 'Frontend Developer' },
+    { value: 'Department Head' },
+  ];
 
   constructor(
     private grapesjsService: GrapesJsService,
@@ -53,8 +70,17 @@ export class CreatePageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialog: MatDialog
   ) {
-    this.formPage = this.formBuilder.group({
-      title: ['', [Validators.required, Validators.minLength(5)]],
+    this.formBusinessCard = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(5)]],
+      position: ['', [Validators.required]],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+        ],
+      ],
     });
   }
 
@@ -62,8 +88,8 @@ export class CreatePageComponent implements OnInit {
     this.editor = GrapesjsConfig(this.grapesjsService, this.dialog);
   }
   onSubmit() {
-    if (this.formPage.invalid) {
-      this.formPage.markAllAsTouched();
+    if (this.formBusinessCard.invalid) {
+      this.formBusinessCard.markAllAsTouched();
       return;
     }
     const htmlData = this.editor.getHtml();
@@ -74,15 +100,13 @@ export class CreatePageComponent implements OnInit {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${this.formPage.value.title || 'Page Title'}</title>
+          <title>${this.formBusinessCard.value.title || 'Page Title'}</title>
           <script src="https://cdn.tailwindcss.com" ></script>
         </head>
         <style>
           ${cssData}
         </style>
-        <body>
           ${htmlData}
-        </body>
         </html>
       `;
     if (htmlData === '<body></body>') {
@@ -103,14 +127,16 @@ export class CreatePageComponent implements OnInit {
       });
       return;
     }
-    const page: CreatePageDto = {
-      title: this.formPage.value.title,
+    const businessCard: CreateBusinessCardDto = {
+      name: this.formBusinessCard.value.name,
+      position: this.formBusinessCard.value.position,
+      phone: this.formBusinessCard.value.phone,
       content: this.valueContent,
       thumbnail: this.listUploadedImages[0],
     };
-    this.grapesjsService.createPage(page).subscribe({
-      next: (response: Page) => {
-        this.formPage.reset();
+    this.grapesjsService.createBusinessCard(businessCard).subscribe({
+      next: (response: BusinessCard) => {
+        this.formBusinessCard.reset();
         this.listUploadedImages = [];
         this.toastr.success('Success', 'Page created successfully', {
           timeOut: 3000,

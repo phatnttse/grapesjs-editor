@@ -1,17 +1,16 @@
 <div class="card my-5" style="width: 50%; margin: 0 auto">
   <div class="card-body">
     <h4 class="mb-32" style="color: #03c9d7; font-weight: 600">
-      Thông tin trang
+      Thông tin danh thiếp
     </h4>
-    <form [formGroup]="formPage" (submit)="onSubmit()">
-      <h6 class="mb-3 mt-5">Ảnh trang</h6>
+    <form [formGroup]="formBusinessCard" (submit)="onSubmit()">
       <div class="upload-section">
         <div class="file-square" (click)="uploadWidget()">
           <label for="cover-image">
             <button mat-button type="button">
               <i class="material-icons">add_photo_alternate</i>
             </button>
-            <span class="fs-12 mt-2">Thêm hình ảnh</span>
+            <span class="fs-12 mt-3">Thêm hình ảnh</span>
           </label>
         </div>
         <div class="uploaded-images">
@@ -29,7 +28,7 @@
         </div>
       </div>
 
-      <h6 class="mb-3 mt-2">Ảnh bìa</h6>
+      <h6 class="mb-3 mt-3">Ảnh đại diện</h6>
       @if (valueThumbnail) {
       <div class="file-square mb-5">
         <img
@@ -50,25 +49,72 @@
       </div>
       }
 
-      <h6 class="mb-3">Tiêu đề</h6>
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label style="font-size: 14px">Nhập tiêu đề</mat-label>
-        <input
-          matInput
-          type="text"
-          required
-          formControlName="title"
-          [class.is-invalid]="
-            formPage.get('title')?.invalid && formPage.get('title')?.touched
-          "
-        />
-        @if (formPage.get('title')?.hasError('required')) {
+      <table class="example-full-width" cellspacing="0">
+        <tr>
+          <td>
+            <h6 class="mb-3">Họ và tên</h6>
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label style="font-size: 14px">Nhập họ và tên</mat-label>
+              <input
+                matInput
+                type="text"
+                required
+                formControlName="name"
+                [class.is-invalid]="
+                  formBusinessCard.get('name')?.invalid &&
+                  formBusinessCard.get('name')?.touched
+                "
+              />
+              @if (formBusinessCard.get('name')?.hasError('required')) {
+              <mat-error style="font-size: 12px"
+                >Họ và tên không được để trống</mat-error
+              >
+              }@else if (formBusinessCard.get('name')?.hasError('minlength')) {
+              <mat-error style="font-size: 12px"
+                >Họ và tên quá ngắn. Ít nhất 5 ký tự</mat-error
+              >
+              }
+            </mat-form-field>
+          </td>
+          <td>
+            <h6 class="mb-3">Số điện thoại</h6>
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label style="font-size: 14px">Nhập số điện thoại</mat-label>
+              <input
+                matInput
+                type="text"
+                required
+                formControlName="phone"
+                [class.is-invalid]="
+                  formBusinessCard.get('phone')?.invalid &&
+                  formBusinessCard.get('phone')?.touched
+                "
+              />
+              @if (formBusinessCard.get('phone')?.hasError('required')) {
+              <mat-error style="font-size: 12px"
+                >Số điện thoại không được để trống</mat-error
+              >
+              }@if(formBusinessCard.get('phone')!.hasError('minlength') ||
+              formBusinessCard.get('phone')!.hasError('maxlength')) {
+              <mat-error class="fs-12">
+                Số điện thoại phải chứa đúng 10 chữ số.
+              </mat-error>
+              }
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <h6 class="mb-3 mt-3">Chức vụ</h6>
+      <mat-form-field appearance="outline">
+        <mat-label style="font-size: 14px">Chọn chức vụ</mat-label>
+        <mat-select required formControlName="position">
+          @for (position of positions; track position) {
+          <mat-option [value]="position.value">{{ position.value }}</mat-option>
+          }
+        </mat-select>
+        @if (formBusinessCard.get('position')?.hasError('required')) {
         <mat-error style="font-size: 12px"
-          >Tiêu đề của trang không được để trống</mat-error
-        >
-        }@else if (formPage.get('title')?.hasError('minlength')) {
-        <mat-error style="font-size: 12px"
-          >Tiêu đề của trang quá ngắn. Ít nhất 5 ký tự</mat-error
+          >Chức vụ không được để trống</mat-error
         >
         }
       </mat-form-field>

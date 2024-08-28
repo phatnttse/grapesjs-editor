@@ -1,15 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { GrapesJsService } from '../../services/grapesjs.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import grapesjs from 'grapesjs';
 import 'grapesjs-tailwind';
-import { Page, UpdatePageDto } from '../../models/page.model';
 import { ToastrService } from 'ngx-toastr';
 import { GrapesjsConfig } from '../../configurations/grapesjs.config';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -27,6 +20,16 @@ import {
 } from '@angular/forms';
 import { CLOUDINARY } from '../../environments/environment.development';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  BusinessCard,
+  UpdateBusinessCardDto,
+} from '../../models/business-card.model';
+import { MatSelectModule } from '@angular/material/select';
+
+interface Position {
+  value: string;
+}
+
 @Component({
   selector: 'app-edit-page',
   standalone: true,
@@ -39,6 +42,7 @@ import { MatDialog } from '@angular/material/dialog';
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatSelectModule,
   ],
   templateUrl: './edit-page.component.html',
   styleUrl: './edit-page.component.scss',
@@ -46,12 +50,20 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class EditPageComponent implements OnInit {
   editor: any = null; // Editor GrapesJS
-  valuePageId: string | null = null; // Id trang
-  formPage: FormGroup; // Form tạo trang
+  valueBusinessCardId: string | null = null; // Id trang
+  formBusinessCard: FormGroup; // Form tạo trang
   isOpenWidget: boolean = false; // Trạng thái của widget
   listUploadedImages: string[] = []; // Danh sách ảnh đã tải lên
   valueThumbnail: string = ''; // Ảnh bìa
   valueContent: string = ''; // Nội dung trang
+
+  positions: Position[] = [
+    { value: 'CEO' },
+    { value: 'COO' },
+    { value: 'Backend Developer' },
+    { value: 'Frontend Developer' },
+    { value: 'Department Head' },
+  ];
 
   constructor(
     private grapesjsService: GrapesJsService,
@@ -61,8 +73,10 @@ export class EditPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialog: MatDialog
   ) {
-    this.formPage = this.formBuilder.group({
-      title: ['', [Validators.required, Validators.minLength(5)]],
+    this.formBusinessCard = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(5)]],
+      position: ['', [Validators.required]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     });
   }
 
@@ -70,16 +84,16 @@ export class EditPageComponent implements OnInit {
     this.editor = GrapesjsConfig(this.grapesjsService, this.dialog);
 
     this.route.paramMap.subscribe((params) => {
-      this.valuePageId = params.get('id');
-      if (this.valuePageId) {
-        this.getPage(this.valuePageId);
+      this.valueBusinessCardId = params.get('id');
+      if (this.valueBusinessCardId) {
+        this.getBusinessCard(this.valueBusinessCardId);
       }
     });
   }
 
   onSubmit(): void {
-    if (this.formPage.invalid) {
-      this.formPage.markAllAsTouched();
+    if (this.formBusinessCard.invalid) {
+      this.formBusinessCard.markAllAsTouched();
       return;
     }
     const htmlData = this.editor.getHtml();
@@ -91,15 +105,13 @@ export class EditPageComponent implements OnInit {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${this.formPage.value.title || 'Page Title'}</title>
+          <title>${this.formBusinessCard.value.title || 'Page Title'}</title>
           <script src="https://cdn.tailwindcss.com" ></script>
           <style>
             ${cssData}
           </style>
         </head>
-        <body>
           ${htmlData}
-        </body>
         </html>
       `;
     }
@@ -121,15 +133,17 @@ export class EditPageComponent implements OnInit {
       });
       return;
     }
-    const page: UpdatePageDto = {
-      id: this.valuePageId!,
-      title: this.formPage.value.title,
+    const businessCard: UpdateBusinessCardDto = {
+      id: this.valueBusinessCardId!,
+      name: this.formBusinessCard.value.name!,
+      phone: this.formBusinessCard.value.phone,
+      position: this.formBusinessCard.value.position,
       content: this.valueContent,
       thumbnail: this.valueThumbnail,
     };
-    this.grapesjsService.updatePage(page).subscribe({
-      next: (response: Page) => {
-        this.toastr.success('Success', 'Page updated successfully', {
+    this.grapesjsService.updateBusinessCard(businessCard).subscribe({
+      next: (response: BusinessCard) => {
+        this.toastr.success('Success', 'Business Card updated successfully', {
           timeOut: 3000,
           progressBar: true,
         });
@@ -144,15 +158,18 @@ export class EditPageComponent implements OnInit {
     });
   }
 
-  getPage(pageId: string) {
-    this.grapesjsService.getPageById(pageId).subscribe({
-      next: (response: Page) => {
-        this.formPage.patchValue({
-          title: response.title,
+  getBusinessCard(pageId: string) {
+    this.grapesjsService.getBusinessCardById(pageId).subscribe({
+      next: (response: BusinessCard) => {
+        this.formBusinessCard.patchValue({
+          title: response.name,
+          position: response.position,
+          phone: response.phone,
         });
         this.valueThumbnail = response.thumbnail;
         this.grapesjsService.getHtmlFromUrl(response.src).subscribe({
           next: (htmlContent: string) => {
+            console.log('HTML content:', htmlContent);
             this.editor.setComponents(htmlContent);
           },
           error: (error: HttpErrorResponse) => {
@@ -161,6 +178,7 @@ export class EditPageComponent implements OnInit {
         });
       },
       error: (error: HttpErrorResponse) => {
+        this.toastr.error(`${error.error.message}`, 'Error');
         console.log(error);
       },
     });

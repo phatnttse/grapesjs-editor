@@ -33,7 +33,8 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss",
               "node_modules/ngx-toastr/toastr.css",
-              "src/assets/styles/user.style.scss"
+              "src/assets/styles/user.style.scss",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": [
               "node_modules/grapesjs-preset-webpage/dist/index.js",
@@ -48,7 +49,9 @@
               "node_modules/grapesjs-style-gradient/dist/index.js",
               "node_modules/grapesjs-tabs/dist/grapesjs-tabs.min.js",
               "node_modules/grapesjs-touch/dist/grapesjs-touch.min.js",
-              "node_modules/grapesjs-preset-newsletter/dist/index.js"
+              "node_modules/grapesjs-preset-newsletter/dist/index.js",
+              "node_modules/grapesjs-plugin-ckeditor/dist/index.js",
+              "node_modules/grapesjs-tui-image-editor/dist/index.js"
             ]
           },
           "configurations": {
