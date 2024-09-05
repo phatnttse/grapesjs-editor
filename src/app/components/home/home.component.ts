@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { GrapesJsService } from '../../services/grapesjs.service';
 import { Router, RouterModule } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
-import { BusinessCard } from '../../models/business-card.model';
+import { NameCardTemplateService } from '../../services/name-card-template.service';
 
 @Component({
   selector: 'app-home',
@@ -14,34 +12,42 @@ import { BusinessCard } from '../../models/business-card.model';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  listBusinessCard: BusinessCard[] = []; // Danh sách trang
-  valueSrc: any = null; // Url tạo trang
-  ngOnInit(): void {
-    this.getPages();
-  }
+  listNameCardTemplates: any = []; // Danh sách card
+
   constructor(
-    private grapesjsService: GrapesJsService,
-    private router: Router,
-    private sanitizer: DomSanitizer
+    private nameCardTemplateService: NameCardTemplateService,
+    private router: Router
   ) {}
 
-  getPages() {
-    this.grapesjsService.getBusinessCards().subscribe({
-      next: (response: BusinessCard[]) => {
-        this.listBusinessCard = response;
+  ngOnInit(): void {
+    this.getNameCardTemplates();
+  }
+
+  getNameCardTemplates() {
+    this.nameCardTemplateService.getNameCardTemplates().subscribe({
+      next: (response: any) => {
+        if (response.resultCode === 'OK') {
+          this.listNameCardTemplates = response.result;
+        }
       },
       error: (error: HttpErrorResponse) => {
         console.log(error);
       },
     });
   }
-  edit(id: string) {
-    this.router.navigate([`/edit-page/${id}`]);
+
+  editNameCardTemplate(id: string) {
+    this.router.navigate([`/insert-update-page/${id}`]);
   }
-  view(id: string) {
-    this.grapesjsService.getBusinessCardById(id).subscribe({
-      next: (response: BusinessCard) => {
-        window.open(`https://localhost:7191${response.src}`);
+
+  viewNameCardTemplate(id: string) {
+    this.nameCardTemplateService.getNameCardTemplateById(id).subscribe({
+      next: (response: any) => {
+        if (response.resultCode === 'OK') {
+          window.open(
+            `https://localhost:7191${response.result.url}?` + Date.now()
+          );
+        }
       },
       error: (error: HttpErrorResponse) => {
         console.log(error);

@@ -26,34 +26,47 @@
   </header>
   <section class="bdg-sect" id="iy98vf">
     <div class="container-width">
-      <h1 class="bdg-title">The team</h1>
+      <h1 class="bdg-title">The name card template</h1>
       <div class="badges">
-        @for (businessCard of listBusinessCard; track $index) {
+        @for (nameCard of listNameCardTemplates; track $index) {
         <div class="badge">
           <div class="badge-header"></div>
           <img
-            (click)="view(businessCard.id)"
-            [src]="businessCard.thumbnail"
+            title="Xem chi tiết"
+            (click)="editNameCardTemplate(nameCard.id)"
+            [src]="nameCard.thumbnail"
             class="badge-avatar"
+            style="object-fit: cover"
           />
           <div class="badge-body">
-            <div class="badge-name">{{ businessCard.name }}</div>
-            <div class="badge-role">{{ businessCard.position }}</div>
-          </div>
-          <div class="badge-foot">
-            <span class="badge-link"
-              ><button
-                type="button"
-                (click)="edit(businessCard.id)"
-                class="btn"
+            <div class="badge-name">
+              <a
+                title="Xem chi tiết"
+                href="javascript:;"
+                (click)="editNameCardTemplate(nameCard.id)"
+                class="badge-link"
               >
-                <mat-icon>edit</mat-icon>
-              </button></span
+                {{ nameCard.name }}
+              </a>
+            </div>
+          </div>
+          <div title="Đi tới trang web" class="badge-foot">
+            <a
+              href="javascript:;"
+              (click)="viewNameCardTemplate(nameCard.id)"
+              class="goto-link"
             >
+              <span>Go to Website</span>
+              <i class="fa-solid fa-arrow-right-long fa-bounce"></i>
+            </a>
           </div>
         </div>
         }
-        <div routerLink="/create-page" class="add-button p-5">
+        <div
+          title="Thêm danh thiếp"
+          routerLink="/insert-update-page/new"
+          class="add-button p-5"
+        >
           <mat-icon style="color: #000; width: 60px">add</mat-icon>
         </div>
       </div>

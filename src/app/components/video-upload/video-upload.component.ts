@@ -34,12 +34,12 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './video-upload.component.scss',
 })
 export class VideoUploadComponent {
-  formVideoUpload: FormGroup; // Form tải video lên
-  isOpenWidget: boolean = false; // Trạng thái của widget
-  listUploadedImages: string[] = []; // Danh sách ảnh đã tải lên
-  valuePoster: string = ''; // Poster của video
-  valueVideo: File | null = null; // Video
-  valueVideoUrl: string | null = null; // URL của video
+  formVideoUpload: any = null; // Form tải video lên
+  isOpenWidget: any = false; // Trạng thái của widget
+  listUploadedImages: any = []; // Danh sách ảnh đã tải lên
+  valuePoster: any = ''; // Poster của video
+  valueVideo: any = null; // Video
+  valueVideoUrl: any = null; // URL của video
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,7 +53,6 @@ export class VideoUploadComponent {
   }
 
   onSubmit() {
-    debugger;
     if (this.formVideoUpload.invalid) {
       this.formVideoUpload.markAllAsTouched();
       return;
@@ -75,8 +74,9 @@ export class VideoUploadComponent {
       )
       .subscribe({
         next: (response: any) => {
-          debugger;
-          this.toastr.success('Video uploaded successfully');
+          this.toastr.success('Video uploaded successfully', 'Success', {
+            progressBar: true,
+          });
           this.formVideoUpload.reset();
           this.listUploadedImages = [];
           this.valuePoster = '';
@@ -127,7 +127,7 @@ export class VideoUploadComponent {
       {
         cloudName: CLOUDINARY.cloudName,
         uploadPreset: CLOUDINARY.uploadPreset,
-        sources: ['local', 'url', 'camera', 'dropbox'], // Thêm các nguồn bạn muốn hỗ trợ
+        sources: ['local', 'url', 'camera', 'dropbox'], // Thêm các nguồn muốn hỗ trợ
         tags: ['myphotoalbum-grapesjs'],
         clientAllowedFormats: ['image'],
         resourceType: 'image',

@@ -27,14 +27,15 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss",
               "node_modules/ngx-toastr/toastr.css",
-              "src/assets/styles/user.style.scss",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "src/assets/styles/style.scss",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/grapesjs-plugin-filestack/dist/grapesjs-plugin-filestack.css"
             ],
             "scripts": [
               "node_modules/grapesjs-preset-webpage/dist/index.js",
@@ -51,7 +52,8 @@
               "node_modules/grapesjs-touch/dist/grapesjs-touch.min.js",
               "node_modules/grapesjs-preset-newsletter/dist/index.js",
               "node_modules/grapesjs-plugin-ckeditor/dist/index.js",
-              "node_modules/grapesjs-tui-image-editor/dist/index.js"
+              "node_modules/grapesjs-tui-image-editor/dist/index.js",
+              "node_modules/grapesjs-plugin-filestack/dist/grapesjs-plugin-filestack.min.js"
             ]
           },
           "configurations": {

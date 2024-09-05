@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreatePageComponent } from './create-page.component';
+import { InsetUpdatePageComponent } from './inset-update-page.component';
 
-describe('CreatePageComponent', () => {
-  let component: CreatePageComponent;
-  let fixture: ComponentFixture<CreatePageComponent>;
+describe('InsetUpdatePageComponent', () => {
+  let component: InsetUpdatePageComponent;
+  let fixture: ComponentFixture<InsetUpdatePageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreatePageComponent]
+      imports: [InsetUpdatePageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CreatePageComponent);
+    fixture = TestBed.createComponent(InsetUpdatePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

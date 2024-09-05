@@ -2,7 +2,8 @@
 // Colors
 // @=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@
 
-$color-array:("primary": $primary,
+$color-array: (
+  "primary": $primary,
   "secondary": $secondary,
   "success": $success,
   "info": $info,
@@ -19,8 +20,7 @@ $color-array:("primary": $primary,
   "light-muted": $light-muted,
 );
 
-@each $color-name,
-$color-value in $color-array {
+@each $color-name, $color-value in $color-array {
   .text-#{$color-name} {
     color: $color-value;
   }
@@ -40,9 +40,6 @@ $color-value in $color-array {
   }
 }
 
-
-
-
 // @=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@
 // Margins & Paddings
 // @=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@
@@ -59,7 +56,7 @@ $unit: "px"; // Feel free to change the unit.
       #{$styleName}: #{$i + $unit} !important;
     }
 
-    $i: $i+$offset;
+    $i: $i + $offset;
   }
 }
 
@@ -81,10 +78,6 @@ $unit: "px"; // Feel free to change the unit.
 @include list-loop(".rtl .pe-", "padding-left");
 @include list-loop(".rtl .ps-", "padding-right");
 
-
-
-
-
 // @=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@
 // Font Sizes
 // @=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@
@@ -96,17 +89,15 @@ $f: 10;
     font-size: 1px * $f;
   }
 
-  $f: $f+2;
+  $f: $f + 2;
 }
-
-
-
 
 // @=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@
 // Font Weights
 // @=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@=@
 
-$font-array:("lighter": 100,
+$font-array: (
+  "lighter": 100,
   "light": 300,
   "normal": 400,
   "medium": 500,
@@ -115,8 +106,7 @@ $font-array:("lighter": 100,
   "black": 800,
 );
 
-@each $font-weight,
-$font-value in $font-array {
+@each $font-weight, $font-value in $font-array {
   .fw-#{$font-weight} {
     font-weight: $font-value;
   }

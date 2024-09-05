@@ -1,0 +1,109 @@
+<div class="w-full p-3">
+  <div class="row d-flex align-items-center justify-content-between col-12">
+    <!-- Image upload section -->
+    <div class="col-4 d-flex align-items-center">
+      <div
+        ngx-dropzone
+        [accept]="'image/*'"
+        (change)="onSelectFile($event)"
+        [multiple]="false"
+        class="me-3"
+        style="width: 200px; height: 80px"
+      >
+        <ngx-dropzone-label>
+          <button mat-button type="button">
+            <i class="material-icons">add_photo_alternate</i>
+          </button>
+          <span class="fs-12 mt-3">Thêm hình ảnh</span>
+        </ngx-dropzone-label>
+        @if (valueFile) {
+        <ngx-dropzone-image-preview
+          [file]="valueFile"
+          [removable]="true"
+          (removed)="onRemoveFile(valueFile)"
+        >
+        </ngx-dropzone-image-preview>
+        }
+      </div>
+      @if (valueThumbnail) {
+      <div class="uploaded-image">
+        <img
+          width="80px"
+          height="80px"
+          style="object-fit: cover"
+          class="rounded"
+          [src]="valueThumbnail"
+          alt=""
+        />
+      </div>
+      }
+    </div>
+
+    <!-- Form section -->
+    <div class="col-3 mt-3">
+      <form [formGroup]="formNameCard">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label style="font-size: 14px">Tên template</mat-label>
+          <input
+            matInput
+            type="text"
+            required
+            formControlName="name"
+            [class.is-invalid]="
+              formNameCard.get('name')?.invalid &&
+              formNameCard.get('name')?.touched
+            "
+          />
+          @if (formNameCard.get('name')?.hasError('required')) {
+          <mat-error style="font-size: 12px">
+            Họ và tên không được để trống
+          </mat-error>
+          } @if (formNameCard.get('name')?.hasError('minlength')) {
+          <mat-error style="font-size: 12px">
+            Họ và tên quá ngắn. Ít nhất 5 ký tự
+          </mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </div>
+
+    <!-- Buttons section -->
+    <div class="col-5 d-flex align-items-center justify-content-end gap-2">
+      <button
+        mat-raised-button
+        class="fs-20 p-24"
+        color="warn"
+        type="button"
+        routerLink="/"
+      >
+        Quay lại
+        <mat-icon>reply</mat-icon>
+      </button>
+
+      @if (valueBusinessCardId !== 'new') {
+      <button
+        mat-raised-button
+        class="fs-20 p-24"
+        color="primary"
+        type="button"
+        (click)="onSaveChanges()"
+      >
+        Lưu thay đổi
+        <mat-icon>task_alt</mat-icon>
+      </button>
+      } @else {
+      <button
+        mat-raised-button
+        class="fs-20 p-24"
+        color="primary"
+        type="button"
+        (click)="onCreateNewNameCard()"
+      >
+        Tạo mới
+        <mat-icon>add</mat-icon>
+      </button>
+      }
+    </div>
+  </div>
+</div>
+<div id="gjs"></div>

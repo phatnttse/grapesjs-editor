@@ -13,12 +13,13 @@ body {
   color: #ffffff;
   font-family: Helvetica, serif;
   font-weight: 100;
-  background-image: url("https://images.unsplash.com/photo-1721332155637-8b339526cf4c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"),
-    url("https://images.unsplash.com/photo-1721332155545-c7a8005a2581?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNnx8fGVufDB8fHx8fA%3D%3D");
+  background-image: url("https://images.unsplash.com/photo-1619995745882-f4128ac82ad6?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+    url("https://images.unsplash.com/photo-1619995745882-f4128ac82ad6?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-attachment: scroll, scroll;
-  background-position: left top, center center;
-  background-repeat: repeat-y, no-repeat;
-  background-size: contain, cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: cover;
 }
 .container-width {
   width: 90%;
@@ -30,7 +31,6 @@ body {
   width: 50%;
 }
 .logo {
-  background-color: #fff;
   border-radius: 5px;
   width: 130px;
   padding: 10px;
@@ -119,16 +119,17 @@ body {
 }
 .badge-header {
   height: 115px;
-  background-image: url("https://images.unsplash.com/photo-1724505599369-2c1d43324fdc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzOHx8fGVufDB8fHx8fA%3D%3D"),
-    url("https://images.unsplash.com/photo-1724505599369-2c1d43324fdc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzOHx8fGVufDB8fHx8fA%3D%3D");
+  background-image: url("https://media.istockphoto.com/id/912159594/vi/anh/l%C3%A0n-s%C3%B3ng-m%E1%BB%81m-m%E1%BA%A1i-c%E1%BB%A7a-n%C6%B0%E1%BB%9Bc-bi%E1%BB%83n-m%C3%A0u-ng%E1%BB%8Dc-lam-tr%C3%AAn-b%C3%A3i-bi%E1%BB%83n-%C4%91%E1%BA%A7y-c%C3%A1t-c%E1%BA%ADn-c%E1%BA%A3nh-v%C3%A0-ngay-ph%C3%ADa-tr%C3%AAn.jpg?s=612x612&w=0&k=20&c=IZV_BDnt8c4UoWVJK9YAsMd1HlNmSxUxoYDPMQkW8h8="),
+    url("https://media.istockphoto.com/id/912159594/vi/anh/l%C3%A0n-s%C3%B3ng-m%E1%BB%81m-m%E1%BA%A1i-c%E1%BB%A7a-n%C6%B0%E1%BB%9Bc-bi%E1%BB%83n-m%C3%A0u-ng%E1%BB%8Dc-lam-tr%C3%AAn-b%C3%A3i-bi%E1%BB%83n-%C4%91%E1%BA%A7y-c%C3%A1t-c%E1%BA%ADn-c%E1%BA%A3nh-v%C3%A0-ngay-ph%C3%ADa-tr%C3%AAn.jpg?s=612x612&w=0&k=20&c=IZV_BDnt8c4UoWVJK9YAsMd1HlNmSxUxoYDPMQkW8h8=");
   background-position: left top, center center;
   background-attachment: scroll, fixed;
   overflow: hidden;
+  object-fit: cover;
 }
 .badge-name {
-  font-size: 1.4em;
+  font-size: 1.8em;
   margin-bottom: 5px;
-  color: #555555;
+  color: #000;
 }
 .badge-role {
   color: #777;
@@ -164,13 +165,13 @@ body {
 }
 .badge-link {
   font-weight: 700;
-  color: #a290a5;
+  text-decoration: none;
+  color: #000;
   display: block;
   border-radius: 2rem;
   padding: 3px;
   &:hover {
-    background-color: #a290a5;
-    color: #fff;
+    color: #a290a5;
   }
 }
 #i4ij {
@@ -193,4 +194,25 @@ body {
     border-color: #aaa;
     cursor: pointer;
   }
+}
+.goto-link {
+  color: #fff;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  &:hover {
+    color: #000;
+  }
+}
+.badge-foot span {
+  margin-right: 8px;
+}
+
+.badge-foot .arrow-icon {
+  font-size: 1.2em;
+  vertical-align: middle;
+  margin-top: 6px;
 }

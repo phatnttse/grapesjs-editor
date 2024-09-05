@@ -9,19 +9,21 @@ export const routes: Routes = [
       );
     },
   },
+
   {
-    path: 'edit-page/:id',
+    path: 'insert-update-page/:id',
     loadComponent() {
-      return import('./components/edit-page/edit-page.component').then(
-        (m) => m.EditPageComponent
-      );
+      return import(
+        './components/inset-update-page/inset-update-page.component'
+      ).then((m) => m.InsetUpdatePageComponent);
     },
   },
+
   {
-    path: 'create-page',
+    path: 'register',
     loadComponent() {
-      return import('./components/create-page/create-page.component').then(
-        (m) => m.CreatePageComponent
+      return import('./components/register/register.component').then(
+        (m) => m.RegisterComponent
       );
     },
   },
