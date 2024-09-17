@@ -47,8 +47,8 @@
           </label>
         </div>
         <div class="uploaded-video">
-          <video *ngIf="valueVideoUrl" width="200" controls>
-            <source [src]="valueVideoUrl" type="video/mp4" />
+          <video *ngIf="videoUrl" width="200" controls>
+            <source [src]="videoUrl" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -77,27 +77,6 @@
         >
         }
       </mat-form-field>
-      <h6 class="mb-3 mt-3">Mô tả video</h6>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Nhập mô tả</mat-label>
-        <textarea
-          matInput
-          rows="3"
-          formControlName="description"
-          [class.is-invalid]="
-            formVideoUpload.get('description')?.invalid &&
-            formVideoUpload.get('description')?.touched
-          "
-        ></textarea>
-        @if (formVideoUpload.get('description')?.hasError('required')) {
-        <mat-error class="fs-12">Mô tả không được để trống</mat-error>
-        }@else if (formVideoUpload.get('description')?.hasError('minlength')) {
-        <mat-error class="fs-12"
-          >Mô tả video quá ngắn. Ít nhất 10 ký tự</mat-error
-        >
-        }
-      </mat-form-field>
-
       <div class="d-flex justify-content-end mt-5">
         <button
           mat-raised-button

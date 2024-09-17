@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://localhost:7191/api/v1',
+  apiBaseUrl: 'http://localhost:5000/api/v1',
 };
 export const CLOUDINARY = {
   production: false,

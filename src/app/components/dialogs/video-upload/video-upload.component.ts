@@ -13,9 +13,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CLOUDINARY } from '../../environments/environment.development';
-import { GrapesJsService } from '../../services/grapesjs.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { GrapesJsService } from '../../../services/grapesjs.service';
+import { CLOUDINARY } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-video-upload',
@@ -37,9 +37,9 @@ export class VideoUploadComponent {
   formVideoUpload: any = null; // Form tải video lên
   isOpenWidget: any = false; // Trạng thái của widget
   listUploadedImages: any = []; // Danh sách ảnh đã tải lên
-  valuePoster: any = ''; // Poster của video
+  posterUrl: any = ''; // Poster của video
   valueVideo: any = null; // Video
-  valueVideoUrl: any = null; // URL của video
+  videoUrl: any = null; // URL của video
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,10 +48,10 @@ export class VideoUploadComponent {
   ) {
     this.formVideoUpload = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
+  // Hàm tải video lên
   onSubmit() {
     if (this.formVideoUpload.invalid) {
       this.formVideoUpload.markAllAsTouched();
@@ -61,16 +61,15 @@ export class VideoUploadComponent {
       this.toastr.error('Please select a video to upload');
       return;
     }
-    if (!this.valuePoster) {
+    if (!this.posterUrl) {
       this.toastr.error('Please upload a poster for the video');
       return;
     }
     this.grapesjsService
-      .uploadVideo(
+      .Video_Upload(
         this.valueVideo,
         this.formVideoUpload.value.title,
-        this.formVideoUpload.value.description,
-        this.valuePoster
+        this.posterUrl
       )
       .subscribe({
         next: (response: any) => {
@@ -79,9 +78,9 @@ export class VideoUploadComponent {
           });
           this.formVideoUpload.reset();
           this.listUploadedImages = [];
-          this.valuePoster = '';
+          this.posterUrl = '';
           this.valueVideo = null;
-          this.valueVideoUrl = '';
+          this.videoUrl = '';
         },
         error: (error: HttpErrorResponse) => {
           this.toastr.error(`${error.error.message}`, 'Error');
@@ -90,6 +89,7 @@ export class VideoUploadComponent {
       });
   }
 
+  // Hàm chọn video
   onVideoSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -102,7 +102,7 @@ export class VideoUploadComponent {
         return;
       }
       this.valueVideo = file;
-      this.valueVideoUrl = URL.createObjectURL(file);
+      this.videoUrl = URL.createObjectURL(file);
     }
   }
 
@@ -114,7 +114,7 @@ export class VideoUploadComponent {
       const secureUrl = result.info.secure_url;
       const previewUrl = secureUrl.replace('/upload/', '/upload/w_451/');
       this.listUploadedImages.push(previewUrl);
-      this.valuePoster = secureUrl;
+      this.posterUrl = secureUrl;
     }
     if (error) {
       this.isOpenWidget = false;

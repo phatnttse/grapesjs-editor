@@ -1,0 +1,190 @@
+.tab-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-code-tab {
+  .qr-code-container {
+    text-align: center;
+    .qr-code-image {
+      width: 200px; /* Adjust size as needed */
+      height: 200px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  }
+}
+
+.link-tab {
+  .link-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    .link-text {
+      word-break: break-all; /* Break long URLs */
+      margin-bottom: 20px;
+      white-space: pre-wrap; /* Preserve whitespace */
+    }
+
+    button {
+      margin-top: 10px;
+    }
+  }
+}
+.btn-copy-link {
+  font-size: 12px;
+}
+.type-image-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.type-image {
+  transition: background-color 0.3s;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 1rem;
+}
+
+.type-image.active {
+  background-color: #15af81;
+  border-radius: 1rem;
+  color: white;
+}
+.container-width {
+  max-width: 390px;
+  width: 100%;
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;
+}
+.bsn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.bsn {
+  width: 100%;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  font-weight: 100;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+  background-color: rgb(255, 255, 255);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.bsn-header {
+  height: 240px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wechat-header {
+  height: 160px;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bsn-avatar {
+  width: 160px;
+  height: 160px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgb(255, 255, 255);
+  border-image: initial;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.bsn-body {
+  background-color: rgb(23, 20, 50);
+  padding-top: 80px;
+  padding-bottom: 20px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+// .logo {
+//   margin-bottom: 70px;
+// }
+// .logo img {
+//   width: 160px;
+//   height: auto;
+//   filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 1px 4px);
+// }
+.bsn-info {
+  font-size: 1.8em;
+  margin-bottom: 5px;
+  color: rgb(255, 255, 255);
+  font-weight: 300;
+  padding: 0px 6px;
+}
+.bsn-name {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+}
+.bsn-body h3 {
+  font-weight: 700;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+.bsn-position {
+  font-size: 14px;
+}
+.contact-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.contact-link {
+  color: rgb(255, 255, 255);
+  text-decoration-line: none;
+  text-decoration-thickness: initial;
+  text-decoration-style: initial;
+  text-decoration-color: initial;
+  display: flex;
+  align-items: center;
+}
+
+.contact-icon {
+  margin-right: 6px;
+}
+
+.bsn-foot .company-name {
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  opacity: 0.6;
+  padding: 0px 6px;
+}

@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment.development';
-import {
-  CreateNameCardTemplateDto,
-  UpdateNameCardTemplateDto,
-} from '../models/name-card-template.model';
+import { InsertUpdateNameCardTemplateDto } from '../models/name-card-template.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,31 +10,22 @@ import {
 export class NameCardTemplateService {
   constructor(private http: HttpClient) {}
 
-  getNameCardTemplates(): Observable<any> {
+  NameCardTemplate_GetAll(): Observable<any> {
     return this.http.get<any>(`${environment.apiBaseUrl}/NameCardTemplate`);
   }
 
-  createNameCardTemplate(
-    createNameCardTemplateDto: CreateNameCardTemplateDto
-  ): Observable<any> {
-    return this.http.post<any>(
-      `${environment.apiBaseUrl}/NameCardTemplate`,
-      createNameCardTemplateDto
-    );
-  }
-
-  getNameCardTemplateById(id: string): Observable<any> {
+  NameCardTemplate_GetById(id: string): Observable<any> {
     return this.http.get<any>(
       `${environment.apiBaseUrl}/NameCardTemplate/${id}`
     );
   }
 
-  updateNameCardTemplate(
-    updateNameCardTemplateDto: UpdateNameCardTemplateDto
+  NameCardTemplate_InsertUpdate(
+    insertUpdateNameCardTemplateDto: InsertUpdateNameCardTemplateDto
   ): Observable<any> {
-    return this.http.patch<any>(
+    return this.http.post<any>(
       `${environment.apiBaseUrl}/NameCardTemplate`,
-      updateNameCardTemplateDto
+      insertUpdateNameCardTemplateDto
     );
   }
 }

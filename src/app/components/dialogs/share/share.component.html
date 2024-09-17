@@ -1,0 +1,144 @@
+<mat-dialog-actions align="end">
+  <button mat-icon-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-dialog-actions>
+<mat-dialog-content style="padding: 0">
+  <mat-tab-group>
+    <!-- Tab QR Code -->
+    <mat-tab label="QR Code">
+      <div class="tab-content qr-code-tab">
+        @if (qrCodeUrl) {
+        <div class="qr-code-container">
+          <!-- <div>
+            <img [src]="qrCodeUrl" alt="QR Code" class="qr-code-image" />
+          </div> -->
+          <section class="bsn-sect">
+            <div class="container-width">
+              <div class="bsn-container">
+                <div id="qr-img" class="bsn">
+                  <div class="bsn-header">
+                    <div class="logo" style="margin-bottom: 70px">
+                      <img [src]="coverPhotoUrl" width="160" alt="Logo" />
+                    </div>
+                  </div>
+                  <img
+                    [src]="qrCodeUrl"
+                    alt="Avatar"
+                    id="il1af"
+                    class="bsn-avatar"
+                  />
+                  <div class="bsn-body">
+                    <div class="bsn-info">
+                      <h5 class="bsn-name">{{ valueUser.fullName }}</h5>
+                      <p class="bsn-position">{{ valueUser.position }}</p>
+                      <div class="contact-info">
+                        <img
+                          src="https://res.cloudinary.com/dlpust9lj/image/upload/v1724990819/qcmynelf3j1bdgismnuf.svg"
+                          alt=""
+                          id="ikyng"
+                          class="contact-icon"
+                        /><a style="margin-right: 24px" class="contact-link">
+                          {{ valueUser.phoneNumber }}
+                        </a>
+                      </div>
+                      <div class="contact-info" style="margin-top: 16px">
+                        <img
+                          src="https://res.cloudinary.com/dlpust9lj/image/upload/v1724990819/kekyv4qg8iitvtkdlzkv.svg"
+                          alt=""
+                          id="i66t3"
+                          class="contact-icon"
+                        /><a class="contact-link">
+                          {{ valueUser.email }}
+                        </a>
+                      </div>
+                    </div>
+                    <div class="bsn-foot">
+                      <p class="company-name">{{ valueUser.companyName }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="type-image-group">
+            <a
+              href="javascript:void(0)"
+              class="type-image"
+              [ngClass]="{ active: statusTypeImage === 1 }"
+              (click)="setActiveButton(1)"
+              >PNG</a
+            >
+            <a
+              href="javascript:void(0)"
+              class="type-image"
+              [ngClass]="{ active: statusTypeImage === 2 }"
+              (click)="setActiveButton(2)"
+              >JPEG</a
+            >
+            <a
+              href="javascript:void(0)"
+              class="type-image"
+              [ngClass]="{ active: statusTypeImage === 3 }"
+              (click)="setActiveButton(3)"
+              >JPG</a
+            >
+          </div>
+
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="btnDownloadQRCodeImage()"
+            class="mb-2 me-3"
+          >
+            Download
+            <mat-icon>download</mat-icon>
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="btnCopyAsImage()"
+            class="mb-2"
+          >
+            Copy
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </div>
+        }@else {
+        <ng-container>
+          <p>Loading QR Code...</p>
+        </ng-container>
+        }
+      </div>
+    </mat-tab>
+
+    <!-- Tab Link -->
+    <mat-tab label="Link">
+      <div class="tab-content link-tab">
+        <h3 class="mb-3">Chia sẻ link</h3>
+        @if (linkUrl) {
+        <div class="link-container">
+          <input
+            class="me-3"
+            style="padding: 8px 24px"
+            type="text"
+            [value]="linkUrl"
+          />
+          <button
+            class="mb-2 btn-copy-link"
+            mat-icon-button
+            color="primary"
+            (click)="btnCopyLink()"
+          >
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </div>
+        }@else {
+        <ng-container>
+          <p>Loading Link...</p>
+        </ng-container>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>

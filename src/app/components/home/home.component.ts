@@ -1,57 +1,28 @@
-import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { NameCardTemplateService } from '../../services/name-card-template.service';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatIconModule, RouterModule],
+  imports: [MatButtonModule, RouterModule, MatIconModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
-  listNameCardTemplates: any = []; // Danh sách card
-
-  constructor(
-    private nameCardTemplateService: NameCardTemplateService,
-    private router: Router
-  ) {}
+export class HomeComponent implements OnInit {
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.getNameCardTemplates();
-  }
+    // Lấy giá trị 'role' từ route params
+    this.route.paramMap.subscribe((params) => {
+      const role = params.get('id');
+      console.log(role);
 
-  getNameCardTemplates() {
-    this.nameCardTemplateService.getNameCardTemplates().subscribe({
-      next: (response: any) => {
-        if (response.resultCode === 'OK') {
-          this.listNameCardTemplates = response.result;
-        }
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-      },
-    });
-  }
-
-  editNameCardTemplate(id: string) {
-    this.router.navigate([`/insert-update-page/${id}`]);
-  }
-
-  viewNameCardTemplate(id: string) {
-    this.nameCardTemplateService.getNameCardTemplateById(id).subscribe({
-      next: (response: any) => {
-        if (response.resultCode === 'OK') {
-          window.open(
-            `https://localhost:7191${response.result.url}?` + Date.now()
-          );
-        }
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-      },
+      if (role === 'admin') {
+      } else if (role === undefined || role === null) {
+        this.router.navigate(['name-card/register']);
+      }
     });
   }
 }

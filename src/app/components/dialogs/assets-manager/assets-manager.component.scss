@@ -1,0 +1,33 @@
+.media-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.media-item {
+  position: relative;
+  width: 100px;
+  height: 120px;
+}
+
+.media-item img,
+.media-item video {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.delete-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 24px;
+  cursor: pointer;
+  font-size: 16px;
+}

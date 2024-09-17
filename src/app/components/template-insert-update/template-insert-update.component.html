@@ -74,19 +74,19 @@
         class="fs-20 p-24"
         color="warn"
         type="button"
-        routerLink="/"
+        routerLink="/templates"
       >
         Quay lại
         <mat-icon>reply</mat-icon>
       </button>
 
-      @if (valueBusinessCardId !== 'new') {
+      @if (valueBusinessCardId) {
       <button
         mat-raised-button
         class="fs-20 p-24"
         color="primary"
         type="button"
-        (click)="onSaveChanges()"
+        (click)="btn_NameCardTemplate_InsertUpdate()"
       >
         Lưu thay đổi
         <mat-icon>task_alt</mat-icon>
@@ -97,7 +97,7 @@
         class="fs-20 p-24"
         color="primary"
         type="button"
-        (click)="onCreateNewNameCard()"
+        (click)="btn_NameCardTemplate_InsertUpdate()"
       >
         Tạo mới
         <mat-icon>add</mat-icon>
