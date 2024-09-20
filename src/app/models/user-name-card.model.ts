@@ -7,7 +7,7 @@ export class CreateUserNameCard {
   user: CreateUser;
 
   constructor(data: any) {
-    this.id = data.id || '' || null;
+    this.id = data.id || '';
     this.nameCardId = data.nameCardId || '';
     this.hostUrl = data.hostUrl || '';
     this.user = data.user || null;

@@ -11,7 +11,7 @@ export class CreateUser {
   websiteUrl: string;
 
   constructor(data: any) {
-    this.id = data.id || '' || null;
+    this.id = data.id || '';
     this.avatar = data.avatar || '';
     this.coverPhoto = data.coverPhoto || '';
     this.fullName = data.fullName || '';

@@ -3,7 +3,6 @@ import { GrapesJsService } from '../services/grapesjs.service';
 import grapesjs from 'grapesjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../environments/environment.development';
-import { ImageUpload } from '../models/image-upload';
 import { MatDialog } from '@angular/material/dialog';
 import { VideoUploadComponent } from '../components/dialogs/video-upload/video-upload.component';
 import { AssetsManagerComponent } from '../components/dialogs/assets-manager/assets-manager.component';
@@ -12,11 +11,11 @@ export const GrapesjsConfig = (
   grapesjsService: GrapesJsService,
   dialog: MatDialog
 ) => {
+  // Khởi tạo Grapesjs editor
   const editor = grapesjs.init({
     container: '#gjs',
     plugins: [
       // 'grapesjs-tailwind',
-      'grapesjs-preset-webpage',
       // 'grapesjs-plugin-forms',
       'grapesjs-blocks-basic',
       'grapesjs-video-embed-manager',
@@ -26,15 +25,13 @@ export const GrapesjsConfig = (
       // 'grapesjs-tabs',
       // 'grapesjs-style-bg',
       // 'grapesjs-blocks-flexbox',
-      // 'grapesjs-preset-newsletter',
+      //'grapesjs-preset-newsletter',
+      'grapesjs-preset-webpage',
       // 'grapesjs-plugin-ckeditor',
       'grapesjs-tui-image-editor',
     ],
     pluginsOpts: {
       // 'grapesjs-tailwind': {},
-      'grapesjs-preset-webpage': {
-        blocks: [],
-      },
       // 'grapesjs-plugin-forms': {},
       'grapesjs-blocks-basic': {},
       // 'grapesjs-navbar': {},
@@ -43,8 +40,11 @@ export const GrapesjsConfig = (
       // 'grapesjs-tabs': {},
       // 'grapesjs-style-bg': {},
       // 'grapesjs-blocks-flexbox': {},
-      // 'grapesjs-preset-newsletter': {},
-      // 'grapesjs-plugin-ckeditor': {},
+      //'grapesjs-preset-newsletter': {},
+      'grapesjs-preset-webpage': {
+        blocks: [],
+      },
+      'grapesjs-plugin-ckeditor': {},
       'grapesjs-tui-image-editor': {
         config: {
           includeUI: {
@@ -56,7 +56,7 @@ export const GrapesjsConfig = (
           const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
           const file = files[0];
           grapesjsService.Image_Upload(file).subscribe({
-            next: (response: ImageUpload) => {
+            next: (response: any) => {
               const am = editor.AssetManager;
               am.add(response); // Thêm tài sản vào Asset Manager
             },
@@ -83,7 +83,7 @@ export const GrapesjsConfig = (
         const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
         const file = files[0];
         grapesjsService.Image_Upload(file).subscribe({
-          next: (response: ImageUpload) => {
+          next: (response: any) => {
             const am = editor.AssetManager;
             const asset = am.add(response); // Thêm tài sản vào Asset Manager
 
@@ -104,7 +104,8 @@ export const GrapesjsConfig = (
     },
   });
 
-  const panelManager = editor.Panels; // Lấy panel manager
+  // Lấy panel manager từ editor
+  const panelManager = editor.Panels;
 
   // Thêm button tải video lên vào panel options
   panelManager.addButton('options', {
@@ -114,6 +115,7 @@ export const GrapesjsConfig = (
     attributes: { title: 'Upload Video' },
   });
 
+  // Thêm button quản lý tài nguyên hình ảnh, video vào panel options
   panelManager.addButton('options', {
     id: 'assets',
     className: 'fas fa-image d-flex align-items-center',
@@ -121,6 +123,7 @@ export const GrapesjsConfig = (
     attributes: { title: 'Get Assets' },
   });
 
+  // Hàm mở dialog quản lý tài nguyên hình ảnh, video
   editor.Commands.add('assets', {
     run() {
       dialog.open(AssetsManagerComponent, {
@@ -141,147 +144,145 @@ export const GrapesjsConfig = (
   });
 
   // Thêm block button mở dialog
-  editor.BlockManager.add('button-open-dialog', {
-    label: 'Button Open Dialog',
-    id: 'button-open-dialog',
-    media:
-      '<img src="https://res.cloudinary.com/dlpust9lj/image/upload/v1725467382/bgc8s6oym48uxwz3ngso.png" alt="Dialog with Button" style="width: 80px;"/>',
-    content: {
-      tagName: 'div',
-      attributes: { class: 'edit-mode' },
-      components: [
-        {
-          tagName: 'div',
-          components: [
-            {
-              tagName: 'button',
-              content: `
-                  <img src="https://res.cloudinary.com/dlpust9lj/image/upload/v1725423588/ggrm7r0lsml8rk3kqvnd.svg" alt="Button Dialog" />
-              `,
-              attributes: {
-                class: 'icon-item',
-                id: `dialog-button-${Date.now()}`, // Generate unique ID once
-              },
-              script: function () {
-                const btn = this as unknown as HTMLButtonElement;
-                const baseId = btn.id.replace('dialog-button-', ''); // Extract base ID from button
+  // editor.BlockManager.add('button-open-dialog', {
+  //   label: 'Button Open Dialog',
+  //   id: 'button-open-dialog',
+  //   content: {
+  //     tagName: 'div',
+  //     attributes: { class: 'edit-mode' },
+  //     components: [
+  //       {
+  //         tagName: 'div',
+  //         components: [
+  //           {
+  //             tagName: 'button',
+  //             content: `
+  //                 <img src="https://res.cloudinary.com/dlpust9lj/image/upload/v1725423588/ggrm7r0lsml8rk3kqvnd.svg" alt="Button Dialog" />
+  //             `,
+  //             attributes: {
+  //               class: 'icon-item',
+  //               id: `dialog-button-${Date.now()}`, // Generate unique ID once
+  //             },
+  //             script: function () {
+  //               const btn = this as unknown as HTMLButtonElement;
+  //               const baseId = btn.id.replace('dialog-button-', ''); // Extract base ID from button
 
-                // Find corresponding dialog elements using the base ID
-                const dialogOverlay = document.getElementById(
-                  `dialog-${baseId}-overlay`
-                ) as HTMLElement;
-                const dialogContent = document.getElementById(
-                  `dialog-${baseId}-content`
-                ) as HTMLElement;
-                const dialogBox = document.getElementById(
-                  `dialog-${baseId}-box`
-                ) as HTMLElement;
+  //               // Find corresponding dialog elements using the base ID
+  //               const dialogOverlay = document.getElementById(
+  //                 `dialog-${baseId}-overlay`
+  //               ) as HTMLElement;
+  //               const dialogContent = document.getElementById(
+  //                 `dialog-${baseId}-content`
+  //               ) as HTMLElement;
+  //               const dialogBox = document.getElementById(
+  //                 `dialog-${baseId}-box`
+  //               ) as HTMLElement;
 
-                btn.addEventListener('click', () => {
-                  if (dialogOverlay && dialogContent && dialogBox) {
-                    dialogOverlay.classList.remove('hidden');
-                    dialogContent.classList.remove('hidden');
-                    dialogBox.classList.remove('hidden');
-                  }
-                });
+  //               btn.addEventListener('click', () => {
+  //                 if (dialogOverlay && dialogContent && dialogBox) {
+  //                   dialogOverlay.classList.remove('hidden');
+  //                   dialogContent.classList.remove('hidden');
+  //                   dialogBox.classList.remove('hidden');
+  //                 }
+  //               });
 
-                if (dialogOverlay) {
-                  dialogOverlay.addEventListener('click', () => {
-                    dialogOverlay.classList.add('hidden');
-                    dialogContent.classList.add('hidden');
-                    dialogBox.classList.add('hidden');
-                  });
-                }
-              },
-            },
-            {
-              tagName: 'div',
-              components: [
-                {
-                  tagName: 'div',
-                  attributes: {
-                    id: `dialog-${Date.now()}-overlay`, // Reuse the base ID for the overlay
-                    class: 'dialog-overlay hidden',
-                  },
-                },
-                {
-                  tagName: 'div',
-                  attributes: {
-                    id: `dialog-${Date.now()}-content`, // Reuse the base ID for the content
-                    class: 'dialog-content hidden',
-                  },
-                  components: [
-                    {
-                      tagName: 'div',
-                      attributes: {
-                        id: `dialog-${Date.now()}-box`, // Reuse the base ID for the dialog box
-                        class: 'dialog-box hidden',
-                      },
-                      components: [
-                        {
-                          tagName: 'button',
-                          content: '&times;',
-                          attributes: {
-                            class: 'dialog-close',
-                            id: `dialog-${Date.now()}-close`, // Unique ID for the close button
-                          },
-                          script: function () {
-                            const closeBtn =
-                              this as unknown as HTMLButtonElement;
-                            const baseId = closeBtn.id.replace('dialog-', ''); // Extract base ID from button
+  //               if (dialogOverlay) {
+  //                 dialogOverlay.addEventListener('click', () => {
+  //                   dialogOverlay.classList.add('hidden');
+  //                   dialogContent.classList.add('hidden');
+  //                   dialogBox.classList.add('hidden');
+  //                 });
+  //               }
+  //             },
+  //           },
+  //           {
+  //             tagName: 'div',
+  //             components: [
+  //               {
+  //                 tagName: 'div',
+  //                 attributes: {
+  //                   id: `dialog-${Date.now()}-overlay`, // Reuse the base ID for the overlay
+  //                   class: 'dialog-overlay hidden',
+  //                 },
+  //               },
+  //               {
+  //                 tagName: 'div',
+  //                 attributes: {
+  //                   id: `dialog-${Date.now()}-content`, // Reuse the base ID for the content
+  //                   class: 'dialog-content hidden',
+  //                 },
+  //                 components: [
+  //                   {
+  //                     tagName: 'div',
+  //                     attributes: {
+  //                       id: `dialog-${Date.now()}-box`, // Reuse the base ID for the dialog box
+  //                       class: 'dialog-box hidden',
+  //                     },
+  //                     components: [
+  //                       {
+  //                         tagName: 'button',
+  //                         content: '&times;',
+  //                         attributes: {
+  //                           class: 'dialog-close',
+  //                           id: `dialog-${Date.now()}-close`, // Unique ID for the close button
+  //                         },
+  //                         script: function () {
+  //                           const closeBtn =
+  //                             this as unknown as HTMLButtonElement;
+  //                           const baseId = closeBtn.id.replace('dialog-', ''); // Extract base ID from button
 
-                            // Find corresponding dialog elements using the base ID
-                            const dialogOverlay = document.getElementById(
-                              `dialog-${baseId}-overlay`
-                            ) as HTMLElement;
-                            const dialogContent = document.getElementById(
-                              `dialog-${baseId}-content`
-                            ) as HTMLElement;
-                            const dialogBox = document.getElementById(
-                              `dialog-${baseId}-box`
-                            ) as HTMLElement;
+  //                           // Find corresponding dialog elements using the base ID
+  //                           const dialogOverlay = document.getElementById(
+  //                             `dialog-${baseId}-overlay`
+  //                           ) as HTMLElement;
+  //                           const dialogContent = document.getElementById(
+  //                             `dialog-${baseId}-content`
+  //                           ) as HTMLElement;
+  //                           const dialogBox = document.getElementById(
+  //                             `dialog-${baseId}-box`
+  //                           ) as HTMLElement;
 
-                            closeBtn.addEventListener('click', () => {
-                              if (dialogOverlay && dialogContent && dialogBox) {
-                                dialogOverlay.classList.add('hidden');
-                                dialogContent.classList.add('hidden');
-                                dialogBox.classList.add('hidden');
-                              }
-                            });
-                          },
-                        },
-                        {
-                          content: `<div class="wechat">
-                            <div class="wechat-header">
-                              <div>
-                                <img
-                                  src="https://res.cloudinary.com/dlpust9lj/image/upload/v1725423588/ggrm7r0lsml8rk3kqvnd.svg"
-                                  alt=""
-                                />
-                              </div>
-                            </div>
-                            <div class="wechat-body">
-                              <img
-                                src="https://res.cloudinary.com/dlpust9lj/image/upload/v1724988103/csjcmqih0s2e1bm0bgxz.svg"
-                                alt=""
-                                id="iuz7g"
-                                width="283"
-                              />
-                            </div>
-                          </div>`,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    category: 'Templates',
-  });
+  //                           closeBtn.addEventListener('click', () => {
+  //                             if (dialogOverlay && dialogContent && dialogBox) {
+  //                               dialogOverlay.classList.add('hidden');
+  //                               dialogContent.classList.add('hidden');
+  //                               dialogBox.classList.add('hidden');
+  //                             }
+  //                           });
+  //                         },
+  //                       },
+  //                       {
+  //                         content: `<div class="wechat">
+  //                           <div class="wechat-header">
+  //                             <div>
+  //                               <img
+  //                                 src="https://res.cloudinary.com/dlpust9lj/image/upload/v1725423588/ggrm7r0lsml8rk3kqvnd.svg"
+  //                                 alt=""
+  //                               />
+  //                             </div>
+  //                           </div>
+  //                           <div class="wechat-body">
+  //                             <img
+  //                               src="https://res.cloudinary.com/dlpust9lj/image/upload/v1724988103/csjcmqih0s2e1bm0bgxz.svg"
+  //                               alt=""
+  //                               id="iuz7g"
+  //                               width="283"
+  //                             />
+  //                           </div>
+  //                         </div>`,
+  //                       },
+  //                     ],
+  //                   },
+  //                 ],
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  //   category: 'Templates',
+  // });
 
   // Tải block name-card-1 từ URL
   grapesjsService
@@ -301,11 +302,29 @@ export const GrapesjsConfig = (
       },
     });
 
+  // Tải block newsletter từ URL
+  grapesjsService
+    .Content_GetFromUrl('assets/grapesjs/blocks/html/newsletter.html')
+    .subscribe({
+      next: (html: string) => {
+        editor.BlockManager.add('newsletter', {
+          label: 'Newsletter',
+          media:
+            '<img src="https://res.cloudinary.com/dlpust9lj/image/upload/v1726804399/czxnxs8wp36oonki1pc1.png" alt="Newsletter" style="width: 80px; max-width:100%; height: auto;"/>',
+          content: html,
+          category: 'Templates',
+        });
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log('Error loading name-card-1 block', error);
+      },
+    });
+
   // Tải block link kèm hình ảnh
   editor.BlockManager.add('link-image', {
     label: 'Link with image',
     media:
-      '<img src="https://res.cloudinary.com/dlpust9lj/image/upload/v1724983528/uv7mmqvcts44fkxafche.svg"  style="width: 80px;border-radius: 10px; max-width:100%;"/>',
+      '<img src="https://res.cloudinary.com/dlpust9lj/image/upload/v1724983528/uv7mmqvcts44fkxafche.svg" alt="Link with image" style="width: 80px; max-width:100%; height: auto;"/>',
     content: `<a
               href="/"
               class="icon-item"

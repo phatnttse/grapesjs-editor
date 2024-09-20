@@ -74,12 +74,12 @@ export class AssetsManagerComponent {
 
   // Hàm xử lý xoá video
   btn_Video_Delete(video: any) {
-    this.grapesjsService.Image_Delete(video.id).subscribe({
+    this.grapesjsService.Video_Delete(video.id).subscribe({
       next: (response: any) => {
         this.listVideos = this.listVideos.filter((vdo) => vdo !== video);
       },
       error: (error: HttpErrorResponse) => {
-        console.error('Error deleting image:', error);
+        console.error('Error deleting video:', error);
       },
     });
   }

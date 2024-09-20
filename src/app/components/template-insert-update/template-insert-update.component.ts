@@ -49,7 +49,7 @@ export class TemplateInsertUpdateComponent {
   valueThumbnail: any = ''; // Ảnh bìa
   valueContent: any = ''; // Nội dung card
   valueFile: any = null; // Giá trị file
-  scriptsData: any = ''; // Dữ liệu script
+  scriptsData: any = ''; // Dữ liệu script để thêm vào template
 
   constructor(
     private grapesjsService: GrapesJsService,
@@ -82,6 +82,12 @@ export class TemplateInsertUpdateComponent {
     this.loadScripts();
   }
 
+  btn_Back() {
+    if (window.parent) {
+      window.history.back();
+      console.log(document.referrer);
+    }
+  }
   // Hàm tạo hoặc cập nhật name card template
   btn_NameCardTemplate_InsertUpdate() {
     if (this.formNameCard.invalid) {
